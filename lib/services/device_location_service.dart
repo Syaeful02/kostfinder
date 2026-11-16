@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
-import 'package:geolocator_web/geolocator_web.dart';
 
 enum LocationFailureType { serviceDisabled, denied, deniedForever }
 
@@ -39,22 +38,11 @@ class DeviceLocationService {
       );
     }
 
-    // Pengaturan berbeda untuk Web dan Mobile
-    late LocationSettings locationSettings;
-    if (kIsWeb) {
-      locationSettings = WebSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      );
-    } else {
-      locationSettings = const LocationSettings(
+    return Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         timeLimit: Duration(seconds: 20),
-      );
-    }
-
-    return Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
+      ),
     );
   }
 }
